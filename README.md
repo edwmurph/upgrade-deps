@@ -1,6 +1,6 @@
 # upgrade-deps
 
-[![npm version](https://badge.fury.io/js/%40edwmurph%2Fupgrade-deps.svg)](https://badge.fury.io/js/%40edwmurph%2Fupgrade-deps)
+[![npm version](https://badge.fury.io/js/upgrade-deps.svg)](https://badge.fury.io/js/upgrade-deps)
 
 Minimal CLI for automating upgrading package.json dependencies
 
@@ -11,15 +11,33 @@ Features:
 - can upgrade npm dependencies
 - can upgrade private dependencies in private git repos by cloning an ephemeral copy of the repo to `~/.upgrade-deps/` using your local git CLI
 
-# Install
-
-```
-npm install --save-dev @edwmurph/upgrade-deps
-```
-
 # Usage
 
-Simplest integration is to add a package.json script:
+## `npx`
+
+```
+npx upgrade-deps
+```
+
+## global install
+
+```
+npm install -g upgrade-deps
+```
+
+and then just:
+
+```
+upgrade-deps
+```
+
+## local install
+
+```
+npm install --save-dev upgrade-deps
+```
+
+and then add a package.json script:
 
 ```
 {
@@ -29,7 +47,7 @@ Simplest integration is to add a package.json script:
 }
 ```
 
-And then
+and then just:
 
 ```
 npm run upgrade-deps

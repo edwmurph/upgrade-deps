@@ -1,5 +1,7 @@
 # upgrade-deps
 
+[![npm version](https://badge.fury.io/js/%40edwmurph%2Fupgrade-deps.svg)](https://badge.fury.io/js/%40edwmurph%2Fupgrade-deps)
+
 Minimal CLI for automating upgrading package.json dependencies
 
 Features:

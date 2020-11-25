@@ -2,7 +2,6 @@ const fs            = require('fs');
 const { exec }      = require('child_process');
 const { promisify } = require('util');
 const path          = require('path');
-const packageJSON   = require(path.join(process.cwd(), 'package.json'));
 
 const storage = '~/.upgrade-deps';
 
@@ -49,8 +48,23 @@ const getLatest = async([ pkgName, version ]) => {
   return [ pkgName, latest ];
 };
 
+const getPackageJSON = () => {
+  const pkgJSONPath = path.join(process.cwd(), 'package.json');
+
+  try {
+    return require( pkgJSONPath );
+  } catch ( ex ) {
+    if ( ex.code === 'MODULE_NOT_FOUND' ) {
+      throw new Error(`couldnt find package.json in current directory: ${ pkgJSONPath }`);
+    }
+    throw ex;
+  }
+};
+
 const upgradeDeps = async() => {
   try {
+    const packageJSON = getPackageJSON();
+
     await execAsync( `[ ! -d ${ storage } ]` ).catch( () => {
       console.error( `${ storage } must not exist` );
       process.exit( 1 );
@@ -72,10 +86,15 @@ const upgradeDeps = async() => {
     ]);
 
 
-    const updated = Object.assign( {}, packageJSON, {
-      dependencies: Object.fromEntries( dependencies ),
-      devDependencies: Object.fromEntries( devDependencies ),
-    });
+    const updated = Object.assign( {}, packageJSON );
+
+    if ( dependencies.length ) {
+      updated.dependencies = Object.fromEntries( dependencies );
+    }
+
+    if ( devDependencies.length ) {
+      updated.devDependencies = Object.fromEntries( devDependencies );
+    }
 
     await writeFileAsync( 'package.json', JSON.stringify( updated, null, 2 ) );
 

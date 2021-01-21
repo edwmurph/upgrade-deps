@@ -30,12 +30,6 @@ Options:
   -h, --help     display help for command
 ```
 
-and then going forward you can upgrade to new releases of this package via:
-
-```
-npm-update -g upgrade-deps
-```
-
 ## global install
 
 ```

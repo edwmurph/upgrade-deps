@@ -61,7 +61,7 @@ const getPackageJSON = () => {
   }
 };
 
-const upgradeDeps = async() => {
+const upgradeDeps = async({ breaking }) => {
   try {
     const packageJSON = getPackageJSON();
 
@@ -89,11 +89,23 @@ const upgradeDeps = async() => {
     const updated = Object.assign( {}, packageJSON );
 
     if ( dependencies.length ) {
-      updated.dependencies = Object.fromEntries( dependencies );
+      updated.dependencies = Object.fromEntries(
+        dependencies.map(([name, version]) => {
+          const prevVersion = packageJSON.dependencies[name];
+          const majorBump = prevVersion.split('.')[0] !== version.split('.')[0];
+          return [name, breaking && majorBump ? version : prevVersion];
+        }),
+      );
     }
 
     if ( devDependencies.length ) {
-      updated.devDependencies = Object.fromEntries( devDependencies );
+      updated.devDependencies = Object.fromEntries(
+        devDependencies.map(([name, version]) => {
+          const prevVersion = packageJSON.devDependencies[name];
+          const majorBump = prevVersion.split('.')[0] !== version.split('.')[0];
+          return [name, breaking && majorBump ? version : prevVersion];
+        }),
+      );
     }
 
     await writeFileAsync( 'package.json', JSON.stringify( updated, null, 2 ) );

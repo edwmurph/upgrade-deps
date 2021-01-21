@@ -5,7 +5,7 @@
 Minimal CLI for automating upgrading package.json dependencies
 
 Features:
-- updates package.json to use latest exact versions for dependencies + devDependencies
+- updates package.json to use latest exact versions within same major release for dependencies + devDependencies
 - parallelizes as much as possible so it's blazing fast
 - code is minimal so it's easy to audit
 - can upgrade npm dependencies
@@ -17,6 +17,23 @@ Features:
 
 ```
 npx upgrade-deps
+```
+
+```
+Usage: cli [options]
+
+CLI for automating upgrading package.json dependencies
+
+Options:
+  -b, --breaking include breaking/major version upgrades
+  -v, --version  output the version
+  -h, --help     display help for command
+```
+
+and then going forward you can upgrade to new releases of this package via:
+
+```
+npm-update -g upgrade-deps
 ```
 
 ## global install

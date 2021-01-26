@@ -93,7 +93,7 @@ const upgradeDeps = async({ breaking }) => {
         dependencies.map(([name, version]) => {
           const prevVersion = packageJSON.dependencies[name];
           const majorBump = prevVersion.split('.')[0] !== version.split('.')[0];
-          return [name, breaking && majorBump ? version : prevVersion];
+          return [name, !majorBump || breaking ? version : prevVersion];
         }),
       );
     }
@@ -103,12 +103,12 @@ const upgradeDeps = async({ breaking }) => {
         devDependencies.map(([name, version]) => {
           const prevVersion = packageJSON.devDependencies[name];
           const majorBump = prevVersion.split('.')[0] !== version.split('.')[0];
-          return [name, breaking && majorBump ? version : prevVersion];
+          return [name, !majorBump || breaking ? version : prevVersion];
         }),
       );
     }
 
-    await writeFileAsync( 'package.json', JSON.stringify( updated, null, 2 ) );
+    await writeFileAsync( 'package.json', JSON.stringify( updated, null, 2 ).trim() );
 
     await execAsync( `rm -rf ${ storage }` );
 

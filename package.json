@@ -16,7 +16,7 @@
     "commander": "8.3.0"
   },
   "devDependencies": {
-    "@edwmurph/eslint-config": "0.1.2"
+    "@edwmurph/eslint-config": "1.0.0"
   },
   "author": "edward",
   "homepage": "https://github.com/edwmurph/upgrade-deps#readme",

@@ -8,7 +8,7 @@ const storage = '~/.upgrade-deps';
 const execAsync = promisify( exec );
 const writeFileAsync = promisify( fs.writeFile );
 const semverRegexStr = '[0-9]+\\.[0-9]+\\.[0-9]+';
-const semverRegex = new RegExp( `^${ semverRegexStr }$` );
+const semverRegex = new RegExp( semverRegexStr );
 const gitSemverRegex = new RegExp( `^.+#${ semverRegexStr }$` );
 
 const getLatestNpm = async( pkgName ) => {
@@ -39,10 +39,10 @@ const getLatestGit = async( version ) => {
 const getLatest = async([ pkgName, version ]) => {
   let latest = version;
 
-  if ( semverRegex.test( version ) ) {
-    latest = await getLatestNpm( pkgName );
-  } else if ( gitSemverRegex.test( version ) ) {
+  if ( gitSemverRegex.test( version ) ) {
     latest = await getLatestGit( version );
+  } else if ( semverRegex.test( version ) ) {
+    latest = await getLatestNpm( pkgName );
   }
 
   return [ pkgName, latest ];
@@ -66,7 +66,6 @@ const upgradeDeps = async({ breaking }) => {
     const packageJSON = getPackageJSON();
 
     await execAsync( `[ ! -d ${ storage } ]` ).catch( () => {
-      console.error( `${ storage } must not exist` );
       process.exit( 1 );
     });
 

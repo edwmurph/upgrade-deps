@@ -22,7 +22,7 @@ npx upgrade-deps
 ```
 Usage: cli [options]
 
-CLI for automating upgrading package.json dependencies
+CLI for automating upgrading package.json dependencies. Semver prefixes will be stripped in favor of using exact versions.
 
 Options:
   -b, --breaking include breaking/major version upgrades

@@ -13,12 +13,6 @@ Features:
 
 # Usage
 
-## `npx`
-
-```
-npx upgrade-deps
-```
-
 ```
 Usage: cli [options]
 
@@ -30,7 +24,13 @@ Options:
   -h, --help     display help for command
 ```
 
-## global install
+## npx
+
+```
+npx upgrade-deps
+```
+
+## Global Install
 
 ```
 npm install -g upgrade-deps
@@ -42,7 +42,7 @@ and then just:
 upgrade-deps
 ```
 
-## local install
+## Local Install
 
 ```
 npm install --save-dev upgrade-deps

@@ -30,8 +30,8 @@ const getLatestGit = async( version ) => {
 
   const { stdout: latestTag } = await execAsync([
     `cd ${ destination }`,
-    '&& git describe --tags `git rev-list --tags --max-count=1`',
-  ].join(' '));
+    '&& git describe --tags `git rev-list --tags --max-count=1`'
+  ].join(' ') );
 
   return `${ repo }#${ latestTag.trim() }`;
 };
@@ -49,13 +49,13 @@ const getLatest = async([ pkgName, version ]) => {
 };
 
 const getPackageJSON = () => {
-  const pkgJSONPath = path.join(process.cwd(), 'package.json');
+  const pkgJSONPath = path.join( process.cwd(), 'package.json' );
 
   try {
     return require( pkgJSONPath );
   } catch ( ex ) {
     if ( ex.code === 'MODULE_NOT_FOUND' ) {
-      throw new Error(`couldnt find package.json in current directory: ${ pkgJSONPath }`);
+      throw new Error( `couldnt find package.json in current directory: ${ pkgJSONPath }` );
     }
     throw ex;
   }
@@ -66,44 +66,45 @@ const upgradeDeps = async({ breaking }) => {
     const packageJSON = getPackageJSON();
 
     await execAsync( `[ ! -d ${ storage } ]` ).catch( () => {
+      console.log( `State directory "${ storage }" must be deleted to continue` );
       process.exit( 1 );
     });
 
     await execAsync( `mkdir -p ${ storage }` );
 
     const depsPromise = Promise.all(
-      Object.entries( packageJSON.dependencies || {} ).map( getLatest ),
+      Object.entries( packageJSON.dependencies || {} ).map( getLatest )
     );
 
     const devDepsPromise = Promise.all(
-      Object.entries( packageJSON.devDependencies || {} ).map( getLatest ),
+      Object.entries( packageJSON.devDependencies || {} ).map( getLatest )
     );
+
 
     const [ dependencies, devDependencies ] = await Promise.all([
       depsPromise,
-      devDepsPromise,
+      devDepsPromise
     ]);
-
 
     const updated = Object.assign( {}, packageJSON );
 
     if ( dependencies.length ) {
       updated.dependencies = Object.fromEntries(
-        dependencies.map(([name, version]) => {
+        dependencies.map( ([name, version]) => {
           const prevVersion = packageJSON.dependencies[name];
           const majorBump = prevVersion.split('.')[0] !== version.split('.')[0];
           return [name, !majorBump || breaking ? version : prevVersion];
-        }),
+        })
       );
     }
 
     if ( devDependencies.length ) {
       updated.devDependencies = Object.fromEntries(
-        devDependencies.map(([name, version]) => {
+        devDependencies.map( ([name, version]) => {
           const prevVersion = packageJSON.devDependencies[name];
           const majorBump = prevVersion.split('.')[0] !== version.split('.')[0];
           return [name, !majorBump || breaking ? version : prevVersion];
-        }),
+        })
       );
     }
 

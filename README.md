@@ -62,4 +62,5 @@ and then just:
 
 ```
 npm run upgrade-deps
+npm run upgrade-deps -- -b
 ```

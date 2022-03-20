@@ -1,6 +1,6 @@
 {
   "name": "upgrade-deps",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "CLI for automating updating package.json dependencies",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "upgrade-deps": "./bin/cli.js"
   },
   "dependencies": {
-    "commander": "9.0.0"
+    "commander": "9.1.0"
   },
   "devDependencies": {
     "@edwmurph/eslint-config": "4.0.0"

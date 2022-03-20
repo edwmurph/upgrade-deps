@@ -14,53 +14,19 @@ Features:
 # Usage
 
 ```
-Usage: cli [options]
+Usage: npx upgrade-deps [options]
 
 CLI for automating upgrading package.json dependencies. Semver prefixes will be stripped in favor of using exact versions.
 
 Options:
-  -b, --breaking include breaking/major version upgrades
-  -v, --version  output the version
-  -h, --help     display help for command
+  -b, --breaking  include breaking/major version upgrades
+  -d, --dry-run   just print which packages are out of date
+  -v, --version   output the version
+  -h, --help      display help for command
 ```
 
 ## npx
 
 ```
 npx upgrade-deps
-```
-
-## Global Install
-
-```
-npm install -g upgrade-deps
-```
-
-and then just:
-
-```
-upgrade-deps
-```
-
-## Local Install
-
-```
-npm install --save-dev upgrade-deps
-```
-
-and then add a package.json script:
-
-```
-{
-  "scripts": {
-    "upgrade-deps": "upgrade-deps"
-  }
-}
-```
-
-and then just:
-
-```
-npm run upgrade-deps
-npm run upgrade-deps -- -b
 ```

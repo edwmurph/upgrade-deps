@@ -5,7 +5,9 @@ const { version } = require('../package.json');
 const upgradeDeps = require('../');
 
 program
+  .name('npx upgrade-deps')
   .option( '-b, --breaking', 'include breaking/major version upgrades' )
+  .option( '-d, --dry-run', 'just print which packages are out of date' )
   .version( version, '-v, --version', 'output the version' )
   .description([
     'CLI for automating upgrading package.json dependencies.',

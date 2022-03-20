@@ -61,7 +61,7 @@ const getPackageJSON = () => {
   }
 };
 
-const upgradeDeps = async({ breaking }) => {
+const upgradeDeps = async({ breaking, dryRun }) => {
   try {
     const packageJSON = getPackageJSON();
 
@@ -87,13 +87,20 @@ const upgradeDeps = async({ breaking }) => {
     ]);
 
     const updated = Object.assign( {}, packageJSON );
+    const dryRunUpdates = { dependencies: {}, devDependencies: {} };
 
     if ( dependencies.length ) {
       updated.dependencies = Object.fromEntries(
         dependencies.map( ([name, version]) => {
           const prevVersion = packageJSON.dependencies[name];
           const majorBump = prevVersion.split('.')[0] !== version.split('.')[0];
-          return [name, !majorBump || breaking ? version : prevVersion];
+          const newVersion = !majorBump || breaking ? version : prevVersion;
+
+          if ( prevVersion !== newVersion ) {
+            dryRunUpdates.dependencies[ name ] = `${ prevVersion } -> ${ newVersion }`;
+          }
+
+          return [name, newVersion];
         })
       );
     }
@@ -103,12 +110,23 @@ const upgradeDeps = async({ breaking }) => {
         devDependencies.map( ([name, version]) => {
           const prevVersion = packageJSON.devDependencies[name];
           const majorBump = prevVersion.split('.')[0] !== version.split('.')[0];
-          return [name, !majorBump || breaking ? version : prevVersion];
+          const newVersion = !majorBump || breaking ? version : prevVersion;
+
+          if ( prevVersion !== newVersion ) {
+            dryRunUpdates.devDependencies[ name ] = `${ prevVersion } -> ${ newVersion }`;
+          }
+
+          return [name, newVersion];
         })
       );
     }
 
-    await writeFileAsync( 'package.json', JSON.stringify( updated, null, 2 ).trim() );
+    if ( dryRun ) {
+      console.log('Dry run package updates:\n');
+      console.log( JSON.stringify( dryRunUpdates, null, 2 ) );
+    } else {
+      await writeFileAsync( 'package.json', JSON.stringify( updated, null, 2 ).trim() );
+    }
 
     await execAsync( `rm -rf ${ storage }` );
 

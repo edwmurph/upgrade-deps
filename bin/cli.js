@@ -22,10 +22,13 @@ program
   .command('reset')
   .description('does a fresh install of all dependencies')
   .addHelpText( 'after', `
-reset command will to:
+reset command will:
 - switch to the node version specified in local .nvmrc
-- remove your local node_modules directory (after prompting you to confirm)
-- install dependencies from local package.json 
+- build a manual 'npm install ...' string via dependencies from local package.json
+- install the npm deps
+
+dependencies are installed individually rather than via 'npm install' as a
+workaround to 'npm install' sometimes crashing.
 ` )
   .action( reset );
 

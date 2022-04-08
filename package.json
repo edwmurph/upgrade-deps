@@ -1,6 +1,6 @@
 {
   "name": "upgrade-deps",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "CLI for automating updating package.json dependencies",
   "main": "index.js",
   "scripts": {

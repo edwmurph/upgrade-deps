@@ -2,8 +2,7 @@
 
 const { program } = require('commander');
 const { version } = require('../package.json');
-const upgradeDeps = require('../lib/upgrade-deps');
-const reset = require('../lib/reset');
+const upgrade_deps = require('../lib/upgrade-deps');
 
 program
   .name('npx upgrade-deps')
@@ -16,20 +15,6 @@ program
     'CLI for automating upgrading package.json dependencies.',
     'Semver prefixes will be stripped in favor of using exact versions.'
   ].join(' ') )
-  .action( upgradeDeps );
-
-program
-  .command('reset')
-  .description('does a fresh install of all dependencies')
-  .addHelpText( 'after', `
-reset command will:
-- switch to the node version specified in local .nvmrc
-- build a manual 'npm install ...' string via dependencies from local package.json
-- install the npm deps
-
-dependencies are installed individually rather than via 'npm install' as a
-workaround to 'npm install' sometimes crashing.
-` )
-  .action( reset );
+  .action( upgrade_deps );
 
 program.parse( process.argv );

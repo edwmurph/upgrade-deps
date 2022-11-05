@@ -14,7 +14,7 @@ Features:
 # Usage
 
 ```
-Usage: npx upgrade-deps [options] [command]
+Usage: npx upgrade-deps [options]
 
 CLI for automating upgrading package.json dependencies. Semver prefixes will be stripped in favor of using exact versions.
 
@@ -23,9 +23,6 @@ Options:
   -b, --breaking  include breaking/major version upgrades
   -d, --dry-run   just print which packages are out of date
   -h, --help      display help for command
-
-Commands:
-  reset           does a fresh install of all dependencies
 ```
 
 ## npx
